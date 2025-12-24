@@ -1,15 +1,17 @@
 import streamlit as st
 import subprocess
 import pandas as pd
+from pathlib import Path
 
 st.set_page_config(
     page_title="DFS Cash Game Dashboard",
     layout="wide"
 )
 
-# -------------------------------
-# Config
-# -------------------------------
+# ------------------------------------------------------------------
+# Configuration
+# ------------------------------------------------------------------
+
 script_outputs = {
     "pullCBS.py": [
         "cbs_QB_projections.csv",
@@ -53,17 +55,67 @@ default_sorts = {
     "stokastic_Salary_Projections.csv": ("Projection", False)
 }
 
-# -------------------------------
+# ------------------------------------------------------------------
 # Helpers
-# -------------------------------
-@st.cache_data(show_spinner=False)
-def load_csv(filename):
-    return pd.read_csv(filename)
+# ------------------------------------------------------------------
 
-def run_script(script_name):
-    subprocess.run(["python3", script_name], check=True)
+def run_script(script_name: str):
+    with st.spinner(f"Running {script_name}..."):
+        subprocess.run(["python", script_name], check=True)
+    st.success(f"{script_name} finished successfully")
 
-# -------------------------------
-# Sidebar – Controls
-# -------------------------------
-st.sidebar.titl
+def available_csvs():
+    files = []
+    for csvs in script_outputs.values():
+        for f in csvs:
+            if Path(f).exists():
+                files.append(f)
+    return files
+
+# ------------------------------------------------------------------
+# Sidebar
+# ------------------------------------------------------------------
+
+st.sidebar.title("DFS Dashboard")
+
+if st.sidebar.button("Run CBS Script"):
+    run_script("pullCBS.py")
+
+if st.sidebar.button("Run Stokastic Stats"):
+    run_script("pullStokasticStatsAPI.py")
+
+if st.sidebar.button("Run Salary Projections"):
+    run_script("pullStokasticSalaryProj.py")
+
+st.sidebar.divider()
+
+csv_files = available_csvs()
+display_map = {titles_for_combo[f]: f for f in csv_files}
+
+selected_title = st.sidebar.selectbox(
+    "Select dataset",
+    options=list(display_map.keys())
+)
+
+# ------------------------------------------------------------------
+# Main View
+# ------------------------------------------------------------------
+
+st.title("DFS Cash Game Dashboard")
+
+if selected_title:
+    filename = display_map[selected_title]
+    df = pd.read_csv(filename)
+
+    # Default sorting
+    default_sort = default_sorts.get(filename)
+    if default_sort:
+        col, descending = default_sort
+        if col in df.columns:
+            df = df.sort_values(col, ascending=descending)
+
+    st.dataframe(
+        df,
+        use_container_width=True,
+        hide_index=True
+    )
