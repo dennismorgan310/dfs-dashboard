@@ -87,6 +87,13 @@ def available_csvs():
 
 st.sidebar.title("DFS Dashboard")
 
+slate_id = st.sidebar.text_input(
+    "Stokastic Slate ID",
+    placeholder="e.g. 27878"
+)
+
+slate_id = slate_id.strip() # enforce numeric input
+
 if st.sidebar.button("Run CBS Script"):
     run_script("pullCBS.py")
 
@@ -95,13 +102,6 @@ if st.sidebar.button("Run Stokastic Stats"):
 
 if st.sidebar.button("Run Salary Projections"):
     run_script("pullStokasticSalaryProj.py")
-
-slate_id = st.sidebar.text_input(
-    "Stokastic Slate ID",
-    placeholder="e.g. 27878"
-)
-
-slate_id = slate_id.strip() # enforce numeric input
 
 st.sidebar.divider()
 
