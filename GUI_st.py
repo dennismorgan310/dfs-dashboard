@@ -59,9 +59,18 @@ default_sorts = {
 # Helpers
 # ------------------------------------------------------------------
 
+import pullCBS_st
+import pullStokasticStatsAPI_st
+import pullStokasticSalaryProj_st
+
 def run_script(script_name: str):
     with st.spinner(f"Running {script_name}..."):
-        subprocess.run(["python", script_name], check=True)
+        if script_name == "pullCBS.py":
+            pullCBS_st.main()
+        elif script_name == "pullStokasticStatsAPI.py":
+            pullStokasticStatsAPI_st.main()
+        elif script_name == "pullStokasticSalaryProj.py":
+            pullStokasticSalaryProj_st.main()
     st.success(f"{script_name} finished successfully")
 
 def available_csvs():
