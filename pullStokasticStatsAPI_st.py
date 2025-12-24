@@ -40,4 +40,4 @@ def main(slate_id):
         process(Type)
 
 if __name__ == "__main__":
-    main()
+    main(slate_id)

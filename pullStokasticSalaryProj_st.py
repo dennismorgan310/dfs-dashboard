@@ -48,4 +48,4 @@ def main(slate_id):
 
 
 if __name__ == "__main__":
-    main()
+    main(slate_id)
