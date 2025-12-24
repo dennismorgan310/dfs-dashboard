@@ -2,10 +2,10 @@
 import requests
 import pandas as pd
 
-def main():
+def main(slate_id):
     url = "https://app-api-dfs-prod-main.azurewebsites.net/api/slatedata/projections"
     params = {
-        "SlateId": 27878
+        "SlateId": slate_id
     }
 
     headers = {

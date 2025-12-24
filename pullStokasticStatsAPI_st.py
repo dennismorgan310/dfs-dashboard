@@ -2,11 +2,11 @@
 import requests
 import pandas as pd
 
-def main():
-    def process(Type):
+def main(slate_id):
+    def process(Type, slate_id):
         url = f"https://app-api-dfs-prod-main.azurewebsites.net/api/slatedata/stats?sport=NFL&type={Type}"
         params = {
-            "SlateId": 27878
+            "SlateId": slate_id
         }
 
         headers = {

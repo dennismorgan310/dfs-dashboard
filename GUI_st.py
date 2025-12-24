@@ -63,14 +63,14 @@ import pullCBS_st
 import pullStokasticStatsAPI_st
 import pullStokasticSalaryProj_st
 
-def run_script(script_name: str):
+def run_script(script_name: str, slate_id: str):
     with st.spinner(f"Running {script_name}..."):
         if script_name == "pullCBS.py":
             pullCBS_st.main()
         elif script_name == "pullStokasticStatsAPI.py":
-            pullStokasticStatsAPI_st.main()
+            pullStokasticStatsAPI_st.main(slate_id)
         elif script_name == "pullStokasticSalaryProj.py":
-            pullStokasticSalaryProj_st.main()
+            pullStokasticSalaryProj_st.main(slate_id)
     st.success(f"{script_name} finished successfully")
 
 def available_csvs():
@@ -95,6 +95,13 @@ if st.sidebar.button("Run Stokastic Stats"):
 
 if st.sidebar.button("Run Salary Projections"):
     run_script("pullStokasticSalaryProj.py")
+
+slate_id = st.sidebar.text_input(
+    "Stokastic Slate ID",
+    placeholder="e.g. 27878"
+)
+
+slate_id = slate_id.strip() # enforce numeric input
 
 st.sidebar.divider()
 
