@@ -37,7 +37,7 @@ def main(slate_id):
         df.to_csv(f"stokastic_{Type}.csv", index=False)
 
     for Type in ['passing', 'rushing', 'receiving']:
-        process(Type)
+        process(Type, slate_id)
 
 if __name__ == "__main__":
     main(slate_id)
