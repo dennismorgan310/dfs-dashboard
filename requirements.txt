@@ -1,0 +1,6 @@
+streamlit
+subprocess
+pandas
+requests
+bs4
+io
